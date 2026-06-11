@@ -12,6 +12,9 @@ st.set_page_config(
     layout="wide"
 )
 
+# =====================
+# PAINEL DE ESTILOS (CSS CORRIGIDO)
+# =====================
 
 st.markdown("""
 <style>
@@ -21,19 +24,140 @@ st.markdown("""
     background-color: #F5F5F5;
 }
 
+/* Texto geral - Ajustado para nunca interferir nos eixos e textos dos gráficos Plotly */
+body,
+p,
+label,
+.stApp span:not([class*="g"]):not([class*="text"]),
+.stApp div:not([class*="plotly"]):not([data-embedding="plotly"]):not([class*="js-plotly"]) {
+    color: #111827 !important;
+}
+
 /* Título principal */
 h1 {
-    color: #1E3A5F;
+    color: #1E3A5F !important;
 }
 
 /* Subtítulos */
 h2, h3 {
-    color: #1E3A5F;
+    color: #1E3A5F !important;
 }
 
 /* Sidebar */
 section[data-testid="stSidebar"] {
     background-color: #E5E7EB;
+}
+
+/* Título e textos da sidebar */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] p {
+    color: black !important;
+}
+
+/* Caixa principal do filtro (quando fechada) */
+.stMultiSelect div[data-baseweb="select"] > div {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid #1E3A5F !important;
+    border-radius: 10px !important;
+}
+
+/* Texto de placeholder / seleção da caixa fechada */
+.stMultiSelect div[data-baseweb="select"] {
+    color: black !important;
+}
+
+/* Campo interno de digitação */
+.stMultiSelect input {
+    color: black !important;
+}
+
+/* Placeholder */
+.stMultiSelect input::placeholder {
+    color: #374151 !important;
+}
+
+/* Itens selecionados (Tags) */
+.stMultiSelect [data-baseweb="tag"] {
+    background-color: #1E3A5F !important;
+    border-radius: 6px !important;
+}
+
+/* Texto dos itens selecionados */
+.stMultiSelect [data-baseweb="tag"] span {
+    color: white !important;
+}
+
+/* =======================================================
+   CORREÇÃO DA LISTA SUSPENSA (MENU ABERTO)
+   ======================================================= */
+
+/* Container geral da lista suspensa */
+div[data-baseweb="popover"] ul,
+div[role="listbox"] {
+    background-color: #1E293B !important;
+    border-radius: 10px !important;
+}
+
+/* Força TODOS os textos das opções a ficarem BRANCOS */
+div[data-baseweb="popover"] li,
+div[role="option"],
+div[role="option"] span,
+div[role="option"] div {
+    color: #FFFFFF !important;
+}
+
+/* Corrige o botão "Select all" (Selecionar todos) */
+div[data-baseweb="popover"] button {
+    color: #FFFFFF !important;
+}
+
+/* Efeito de hover ao passar o mouse pelas opções */
+div[data-baseweb="popover"] li:hover,
+div[role="option"]:hover {
+    background-color: #334155 !important;
+}
+
+/* KPIs */
+[data-testid="stMetricLabel"] {
+    color: #374151 !important;
+    font-weight: 600;
+}
+
+[data-testid="stMetricValue"] {
+    color: #111827 !important;
+    font-weight: 700;
+}
+
+/* Caption */
+[data-testid="stCaptionContainer"] {
+    color: #4B5563 !important;
+}
+
+/* =======================================================
+   CORREÇÃO DO BOTÃO DE OCULTAR/MOSTRAR FILTROS (SIDEBAR)
+   ======================================================= */
+
+/* Força o botão a ficar visível com fundo azul escuro e sem transparências */
+button[data-testid="stSidebarCollapseButton"] {
+    background-color: #1E3A5F !important;
+    border-radius: 8px !important;
+    opacity: 1 !important;
+    transition: background-color 0.2s ease, transform 0.2s ease !important;
+}
+
+/* Garante que os ícones das setinhas de dentro do botão fiquem brancos */
+button[data-testid="stSidebarCollapseButton"] svg {
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+
+/* Efeito ao passar o mouse no botão da sidebar (muda para um tom mais escuro) */
+button[data-testid="stSidebarCollapseButton"]:hover {
+    background-color: #111827 !important;
 }
 
 </style>
@@ -184,10 +308,7 @@ ranking_transportadoras = (
     .groupby("transportadora")
     .size()
     .reset_index(name="atrasos")
-    .sort_values(
-        "atrasos",
-        ascending=False
-    )
+    .sort_values("atrasos", ascending=False)
 )
 
 fig_transportadoras = px.bar(
@@ -199,42 +320,41 @@ fig_transportadoras = px.bar(
 )
 
 fig_transportadoras.update_layout(
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-    
-
-    title_font_size=0,
-
-    xaxis_title="Transportadora",
-    yaxis_title="Quantidade de Atrasos",
-
-    font=dict(
-        size=12,
-        color="#1E3A5F"
+    showlegend=False,
+    plot_bgcolor="rgba(0,0,0,0)",
+    paper_bgcolor="rgba(0,0,0,0)",
+    title_font=dict(size=20, color="#1E3A5F"),
+    margin=dict(l=40, r=40, t=60, b=40),
+    xaxis=dict(
+        title=dict(
+            text="Transportadora",
+            font=dict(size=16, color="#111827"),
+            standoff=15                            # Correção: standoff movido para dentro de title
+        ),
+        tickfont=dict(size=14, color="#111827")
     ),
-
-    margin=dict(
-        l=20,
-        r=20,
-        t=60,
-        b=20
+    yaxis=dict(
+        title=dict(
+            text="Quantidade de Atrasos",
+            font=dict(size=16, color="#111827"),
+            standoff=15                            # Correção: standoff movido para dentro de title
+        ),
+        tickfont=dict(size=14, color="#111827"),
+        gridcolor="#E5E7EB"
     )
 )
 
 fig_transportadoras.update_traces(
-    marker_line_width=2,
+    marker_line_width=1.5,
     marker_line_color="#0F172A",
     textposition="outside",
     texttemplate="%{y}",
     textfont=dict(
-        size=18,
-        color="black"
+        size=16,
+        color="#111827",
+        weight="bold"
     ),
-    width=0.4
-)
-
-fig_transportadoras.update_traces(
-    width=0.6
+    width=0.35
 )
 
 # =====================
@@ -246,10 +366,7 @@ ranking_regioes = (
     .groupby("regiao")
     .size()
     .reset_index(name="atrasos")
-    .sort_values(
-        "atrasos",
-        ascending=False
-    )
+    .sort_values("atrasos", ascending=False)
 )
 
 fig_regioes = px.bar(
@@ -261,46 +378,40 @@ fig_regioes = px.bar(
 )
 
 fig_regioes.update_layout(
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-
-    title_font_size=20,
-
-    xaxis_title="Região",
-    yaxis_title="Quantidade de Atrasos",
-
-    font=dict(
-        size=14,
-        color="#1E3A5F"
+    plot_bgcolor="rgba(0,0,0,0)",
+    paper_bgcolor="rgba(0,0,0,0)",
+    title_font=dict(size=20, color="#1E3A5F"),
+    margin=dict(l=40, r=40, t=60, b=40),
+    xaxis=dict(
+        title=dict(
+            text="Região",
+            font=dict(size=16, color="#111827"),
+            standoff=15
+        ),
+        tickfont=dict(size=14, color="#111827")
     ),
-
-    margin=dict(
-        l=20,
-        r=20,
-        t=60,
-        b=20
+    yaxis=dict(
+        title=dict(
+            text="Quantidade de Atrasos",
+            font=dict(size=16, color="#111827"),
+            standoff=15
+        ),
+        tickfont=dict(size=14, color="#111827"),
+        gridcolor="#E5E7EB"
     )
 )
 
 fig_regioes.update_traces(
-    marker_line_width=2,
+    marker_line_width=1.5,
     marker_line_color="#7C2D12",
     textposition="outside",
     texttemplate="%{y}",
     textfont=dict(
-        size=18,
-        color="black"
+        size=16,
+        color="#111827",
+        weight="bold"
     ),
-    width=0.4
-)
-
-fig_regioes.update_traces(
-    width=0.6
-)
-
-fig_regioes.update_layout(
-    plot_bgcolor="white",
-    paper_bgcolor="white"
+    width=0.35
 )
 
 # =====================
@@ -312,28 +423,20 @@ st.divider()
 col_graf1, col_graf2 = st.columns([1, 1])
 
 with col_graf1:
-
-    st.subheader(
-        "🚚 Comparação entre Transportadoras"
-    )
-
+    st.subheader("🚚 Comparação entre Transportadoras")
     st.plotly_chart(
-    fig_transportadoras,
-    use_container_width=True,
-    config={"displayModeBar": False}
-)
+        fig_transportadoras,
+        use_container_width=True,
+        config={"displayModeBar": False}
+    )
 
 with col_graf2:
-
-    st.subheader(
-        "🗺️ Análise por Região"
-    )
-
+    st.subheader("🗺️ Análise por Região")
     st.plotly_chart(
-    fig_regioes,
-    use_container_width=True,
-    config={"displayModeBar": False}
-)
+        fig_regioes,
+        use_container_width=True,
+        config={"displayModeBar": False}
+    )
 
 # =====================
 # RANKING DE PROBLEMAS
@@ -341,9 +444,7 @@ with col_graf2:
 
 st.divider()
 
-st.subheader(
-    "🚨 Ranking das Transportadoras Mais Problemáticas"
-)
+st.subheader("🚨 Ranking das Transportadoras Mais Problemáticas")
 
 ranking_problemas = (
     df_atrasadas
@@ -353,10 +454,7 @@ ranking_problemas = (
         dias_totais_atraso=("dias_atraso", "sum")
     )
     .reset_index()
-    .sort_values(
-        "dias_totais_atraso",
-        ascending=False
-    )
+    .sort_values("dias_totais_atraso", ascending=False)
 )
 
 fig_problemas = px.bar(
@@ -374,58 +472,56 @@ fig_problemas = px.bar(
 )
 
 fig_problemas.update_layout(
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-
-    title_font_size=22,
-
-    xaxis_title="Transportadora",
-    yaxis_title="Dias Totais de Atraso",
-
-    font=dict(
-        size=14,
-        color="#1E3A5F"
+    plot_bgcolor="rgba(0,0,0,0)",
+    paper_bgcolor="rgba(0,0,0,0)",
+    title_font=dict(size=22, color="#1E3A5F"),
+    margin=dict(l=40, r=40, t=60, b=40),
+    
+    xaxis=dict(
+        title=dict(
+            text="Transportadora",
+            font=dict(size=16, color="#111827"),
+            standoff=15
+        ),
+        tickfont=dict(size=14, color="#111827")
     ),
-
-    margin=dict(
-        l=20,
-        r=20,
-        t=60,
-        b=20
+    
+    yaxis=dict(
+        title=dict(
+            text="Dias Totais de Atraso",
+            font=dict(size=16, color="#111827"),
+            standoff=15
+        ),
+        tickfont=dict(size=14, color="#111827"),
+        gridcolor="#E5E7EB"
+    ),
+    
+    coloraxis_colorbar=dict(
+        title=dict(
+            text="Dias Totais",
+            font=dict(size=14, color="#111827")
+        ),
+        tickfont=dict(size=12, color="#111827")
     )
 )
 
 fig_problemas.update_traces(
-    marker_line_width=2,
+    marker_line_width=1.5,
     marker_line_color="black",
     textposition="outside",
     texttemplate="%{y}",
     textfont=dict(
-        size=18,
-        color="black"
+        size=16,
+        color="#111827",
+        weight="bold"
     ),
-    width=0.4
-)
-
-fig_problemas.update_traces(
-    width=0.6
-)
-
-fig_problemas.update_layout(
-    plot_bgcolor="white",
-    paper_bgcolor="white"
+    width=0.35
 )
 
 st.plotly_chart(
     fig_problemas,
     use_container_width=True,
     config={"displayModeBar": False}
-)
-
-st.dataframe(
-    ranking_problemas,
-    hide_index=True,
-    use_container_width=True
 )
 
 # =====================
