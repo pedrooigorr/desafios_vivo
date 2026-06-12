@@ -8,7 +8,7 @@ import plotly.express as px
 
 st.set_page_config(
     page_title="Dashboard Logístico",
-    page_icon="📦",
+    page_icon="",
     layout="wide"
 )
 
@@ -234,7 +234,7 @@ button[data-testid="stSidebarCollapseButton"]:hover {
 # CABEÇALHO
 # =====================
 
-st.title("📦 Dashboard Logístico Inteligente")
+st.title("Dashboard Logístico Inteligente")
 
 st.caption(
     "Monitoramento de atrasos logísticos e desempenho operacional em tempo real"
@@ -383,13 +383,14 @@ ranking_transportadoras = (
     .groupby("transportadora")
     .size()
     .reset_index(name="atrasos")
-    .sort_values("atrasos", ascending=False)
+    .sort_values("atrasos", ascending=True)
 )
 
 fig_transportadoras = px.bar(
     ranking_transportadoras,
-    x="transportadora",
-    y="atrasos",
+    x="atrasos",
+    y="transportadora",
+    orientation="h",
     title="Quantidade de Entregas Atrasadas por Transportadora",
     color_discrete_sequence=["#1E3A5F"]
 )
@@ -399,23 +400,23 @@ fig_transportadoras.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     paper_bgcolor="rgba(0,0,0,0)",
     title_font=dict(size=20, color="#1E3A5F"),
-    margin=dict(l=40, r=40, t=60, b=40),
+    margin=dict(l=40, r=60, t=60, b=40),
     xaxis=dict(
-        title=dict(
-            text="Transportadora",
-            font=dict(size=16, color="#111827"),
-            standoff=15                            # Correção: standoff movido para dentro de title
-        ),
-        tickfont=dict(size=14, color="#111827")
-    ),
-    yaxis=dict(
         title=dict(
             text="Quantidade de Atrasos",
             font=dict(size=16, color="#111827"),
-            standoff=15                            # Correção: standoff movido para dentro de title
+            standoff=15
         ),
         tickfont=dict(size=14, color="#111827"),
         gridcolor="#E5E7EB"
+    ),
+    yaxis=dict(
+        title=dict(
+            text="Transportadora",
+            font=dict(size=16, color="#111827"),
+            standoff=15
+        ),
+        tickfont=dict(size=14, color="#111827")
     )
 )
 
@@ -423,13 +424,9 @@ fig_transportadoras.update_traces(
     marker_line_width=1.5,
     marker_line_color="#0F172A",
     textposition="outside",
-    texttemplate="%{y}",
-    textfont=dict(
-        size=16,
-        color="#111827",
-        weight="bold"
-    ),
-    width=0.35
+    texttemplate="%{x}",
+    textfont=dict(size=16, color="#111827", weight="bold"),
+    width=0.5
 )
 
 # =====================
@@ -449,7 +446,7 @@ fig_regioes = px.bar(
     x="regiao",
     y="atrasos",
     title="Entregas Atrasadas por Região",
-    color_discrete_sequence=["#F97316"]
+    color_discrete_sequence=["#1E3A5F"]
 )
 
 fig_regioes.update_layout(
@@ -478,7 +475,7 @@ fig_regioes.update_layout(
 
 fig_regioes.update_traces(
     marker_line_width=1.5,
-    marker_line_color="#7C2D12",
+    marker_line_color="#0F172A",
     textposition="outside",
     texttemplate="%{y}",
     textfont=dict(
@@ -514,12 +511,12 @@ with col_graf2:
     )
 
 # =====================
-# RANKING DE PROBLEMAS
+# TRANSPORTADORAS MAIS PROBLEMÁTICAS
 # =====================
 
 st.divider()
 
-st.subheader("🚨 Ranking das Transportadoras Mais Problemáticas")
+st.subheader("🚨 Transportadoras Mais Problemáticas")
 
 ranking_problemas = (
     df_atrasadas
@@ -532,18 +529,12 @@ ranking_problemas = (
     .sort_values("dias_totais_atraso", ascending=False)
 )
 
-fig_problemas = px.bar(
+fig_problemas = px.pie(
     ranking_problemas,
-    x="transportadora",
-    y="dias_totais_atraso",
-    color="dias_totais_atraso",
-    color_continuous_scale=[
-        "#FDE68A",
-        "#F59E0B",
-        "#EF4444",
-        "#991B1B"
-    ],
-    title="Dias Totais de Atraso por Transportadora"
+    names="transportadora",
+    values="dias_totais_atraso",
+    title="Dias Totais de Atraso por Transportadora",
+    color_discrete_sequence=["#1E3A5F", "#2E5C99", "#4A80C4", "#7AAEDD", "#B8D4F0"]
 )
 
 fig_problemas.update_layout(
@@ -551,46 +542,16 @@ fig_problemas.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     title_font=dict(size=22, color="#1E3A5F"),
     margin=dict(l=40, r=40, t=60, b=40),
-    
-    xaxis=dict(
-        title=dict(
-            text="Transportadora",
-            font=dict(size=16, color="#111827"),
-            standoff=15
-        ),
-        tickfont=dict(size=14, color="#111827")
-    ),
-    
-    yaxis=dict(
-        title=dict(
-            text="Dias Totais de Atraso",
-            font=dict(size=16, color="#111827"),
-            standoff=15
-        ),
-        tickfont=dict(size=14, color="#111827"),
-        gridcolor="#E5E7EB"
-    ),
-    
-    coloraxis_colorbar=dict(
-        title=dict(
-            text="Dias Totais",
-            font=dict(size=14, color="#111827")
-        ),
-        tickfont=dict(size=12, color="#111827")
+    legend=dict(
+        font=dict(size=14, color="#111827")
     )
 )
 
 fig_problemas.update_traces(
-    marker_line_width=1.5,
-    marker_line_color="black",
-    textposition="outside",
-    texttemplate="%{y}",
-    textfont=dict(
-        size=16,
-        color="#111827",
-        weight="bold"
-    ),
-    width=0.35
+    textposition="inside",
+    textinfo="percent+label",
+    textfont=dict(size=14, color="white"),
+    marker=dict(line=dict(color="#FFFFFF", width=2))
 )
 
 st.plotly_chart(
@@ -615,11 +576,9 @@ st.dataframe(
             "regiao",
             "prazo_dias",
             "dias_reais",
-            "dias_atraso",
             "atrasada"
         ]
     ],
     hide_index=True,
     use_container_width=True
 )
-
