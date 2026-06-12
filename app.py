@@ -24,9 +24,30 @@ st.markdown("""
     background-color: #D1D5DB;
 }
 
-/* Oculta o header do Streamlit completamente */
-header[data-testid="stHeader"] {
-    display: none !important;
+/* Header do Streamlit - fundo fixo independente do tema */
+header[data-testid="stHeader"],
+header[data-testid="stHeader"] > div,
+.stApp > header {
+    background-color: #1E3A5F !important;
+    background: #1E3A5F !important;
+}
+
+/* Ícones, botões e SVGs do header sempre brancos */
+header[data-testid="stHeader"] button,
+header[data-testid="stHeader"] button svg,
+header[data-testid="stHeader"] a,
+header[data-testid="stHeader"] a svg,
+header[data-testid="stHeader"] svg,
+header[data-testid="stHeader"] span,
+header[data-testid="stHeader"] p {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+}
+
+/* Remove qualquer efeito de tema que possa sobrescrever */
+header[data-testid="stHeader"] * {
+    --text-color: #FFFFFF !important;
 }
 
 /* Texto geral - Ajustado para nunca interferir nos eixos e textos dos gráficos Plotly */
@@ -601,3 +622,4 @@ st.dataframe(
     hide_index=True,
     use_container_width=True
 )
+
