@@ -24,6 +24,19 @@ st.markdown("""
     background-color: #D1D5DB;
 }
 
+/* Header do Streamlit - fundo escuro fixo para os ícones ficarem visíveis */
+header[data-testid="stHeader"] {
+    background-color: #1E3A5F !important;
+}
+
+/* Ícones e botões do header brancos */
+header[data-testid="stHeader"] button,
+header[data-testid="stHeader"] a,
+header[data-testid="stHeader"] svg {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}
+
 /* Texto geral - Ajustado para nunca interferir nos eixos e textos dos gráficos Plotly */
 body,
 p,
@@ -83,6 +96,12 @@ section[data-testid="stSidebar"] p {
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     border: 1px solid #E5E7EB;
     overflow: hidden;
+}
+
+/* Força fundo branco dentro do dataframe (iframe interno) */
+[data-testid="stDataFrame"] iframe {
+    background-color: #FFFFFF !important;
+    border-radius: 12px;
 }
 
 /* Área do conteúdo principal com leve padding para respirar */
@@ -212,7 +231,15 @@ st.caption(
 # CARREGAMENTO DOS DADOS
 # =====================
 
-df = pd.read_csv("dados.csv")
+df = pd.DataFrame({
+    "id_entrega": [301, 302, 303, 304, 305, 306, 307, 308, 309, 310],
+    "transportadora": ["RotaMax", "ViaCargo", "FlashLog", "RotaMax", "ViaCargo",
+                       "FlashLog", "RotaMax", "ViaCargo", "FlashLog", "ViaCargo"],
+    "regiao": ["Sudeste", "Sul", "Nordeste", "Norte", "Centro-Oeste",
+               "Sul", "Sul", "Sudeste", "Norte", "Nordeste"],
+    "prazo_dias": [3, 5, 4, 6, 2, 5, 6, 3, 5, 4],
+    "dias_reais": [7, 5, 9, 4, 6, 12, 9, 4, 5, 8]
+})
 
 # =====================
 # COLUNAS CALCULADAS
