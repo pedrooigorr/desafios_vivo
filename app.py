@@ -24,17 +24,30 @@ st.markdown("""
     background-color: #D1D5DB;
 }
 
-/* Header do Streamlit - fundo escuro fixo para os ícones ficarem visíveis */
-header[data-testid="stHeader"] {
+/* Header do Streamlit - fundo fixo independente do tema */
+header[data-testid="stHeader"],
+header[data-testid="stHeader"] > div,
+.stApp > header {
     background-color: #1E3A5F !important;
+    background: #1E3A5F !important;
 }
 
-/* Ícones e botões do header brancos */
+/* Ícones, botões e SVGs do header sempre brancos */
 header[data-testid="stHeader"] button,
+header[data-testid="stHeader"] button svg,
 header[data-testid="stHeader"] a,
-header[data-testid="stHeader"] svg {
+header[data-testid="stHeader"] a svg,
+header[data-testid="stHeader"] svg,
+header[data-testid="stHeader"] span,
+header[data-testid="stHeader"] p {
     color: #FFFFFF !important;
     fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+}
+
+/* Remove qualquer efeito de tema que possa sobrescrever */
+header[data-testid="stHeader"] * {
+    --text-color: #FFFFFF !important;
 }
 
 /* Texto geral - Ajustado para nunca interferir nos eixos e textos dos gráficos Plotly */
