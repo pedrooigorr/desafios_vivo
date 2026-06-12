@@ -19,9 +19,9 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* Fundo principal */
+/* Fundo principal - cinza médio como na imagem de referência */
 .stApp {
-    background-color: #F5F5F5;
+    background-color: #D1D5DB;
 }
 
 /* Texto geral - Ajustado para nunca interferir nos eixos e textos dos gráficos Plotly */
@@ -45,7 +45,7 @@ h2, h3 {
 
 /* Sidebar */
 section[data-testid="stSidebar"] {
-    background-color: #E5E7EB;
+    background-color: #1E3A5F;
 }
 
 /* Título e textos da sidebar */
@@ -54,35 +54,70 @@ section[data-testid="stSidebar"] h2,
 section[data-testid="stSidebar"] h3,
 section[data-testid="stSidebar"] label,
 section[data-testid="stSidebar"] p {
-    color: black !important;
+    color: white !important;
+}
+
+/* Card branco para KPIs */
+[data-testid="stMetric"] {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    border: 1px solid #E5E7EB;
+}
+
+/* Card branco para gráficos Plotly */
+[data-testid="stPlotlyChart"] {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    border: 1px solid #E5E7EB;
+}
+
+/* Card branco para a tabela/dataframe */
+[data-testid="stDataFrame"] {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    border: 1px solid #E5E7EB;
+    overflow: hidden;
+}
+
+/* Área do conteúdo principal com leve padding para respirar */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: transparent;
 }
 
 /* Caixa principal do filtro (quando fechada) */
 .stMultiSelect div[data-baseweb="select"] > div {
-    background-color: white !important;
-    color: black !important;
-    border: 2px solid #1E3A5F !important;
+    background-color: #29497A !important;
+    color: white !important;
+    border: 2px solid #4A6FA5 !important;
     border-radius: 10px !important;
 }
 
 /* Texto de placeholder / seleção da caixa fechada */
 .stMultiSelect div[data-baseweb="select"] {
-    color: black !important;
+    color: white !important;
 }
 
 /* Campo interno de digitação */
 .stMultiSelect input {
-    color: black !important;
+    color: white !important;
 }
 
 /* Placeholder */
 .stMultiSelect input::placeholder {
-    color: #374151 !important;
+    color: #CBD5E1 !important;
 }
 
 /* Itens selecionados (Tags) */
 .stMultiSelect [data-baseweb="tag"] {
-    background-color: #1E3A5F !important;
+    background-color: #F97316 !important;
     border-radius: 6px !important;
 }
 
