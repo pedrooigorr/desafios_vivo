@@ -37,13 +37,16 @@ header[data-testid="stHeader"] * {
 body,
 p,
 label,
-.stApp span:not([class*="g"]):not([class*="text"]),
-.stApp div:not([class*="plotly"]):not([data-embedding="plotly"]):not([class*="js-plotly"]) {
+.stApp span:not([class*="g"]):not([class*="text"]):not(h1 span),
+.stApp div:not([class*="plotly"]):not([data-embedding="plotly"]):not([class*="js-plotly"]):not(:has(h1)) {
     color: #111827 !important;
 }
 
-h1       { color: #1E3A5F !important; }
-h2, h3   { color: #1E3A5F !important; }
+h1, h1 span { color: #F59E0B !important; }
+h2, h3 { color: #1E3A5F !important; }
+
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h1 span { color: white !important; }
 
 /* =====================
    SIDEBAR
@@ -52,7 +55,6 @@ section[data-testid="stSidebar"] {
     background-color: #3c424d;
 }
 
-section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2,
 section[data-testid="stSidebar"] h3,
 section[data-testid="stSidebar"] label,

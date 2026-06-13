@@ -26,6 +26,13 @@ st.set_page_config(
 with open("assets/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+        h1 { color: #F59E0B !important; }
+        section[data-testid="stSidebar"] h1 { color: white !important; }
+    </style>
+""", unsafe_allow_html=True)
+
 # =====================
 # CABEÇALHO
 # =====================
