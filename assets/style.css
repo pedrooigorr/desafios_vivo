@@ -49,7 +49,7 @@ h2, h3   { color: #1E3A5F !important; }
    SIDEBAR
    ===================== */
 section[data-testid="stSidebar"] {
-    background-color: #4a5c7c;
+    background-color: #3c424d;
 }
 
 section[data-testid="stSidebar"] h1,
