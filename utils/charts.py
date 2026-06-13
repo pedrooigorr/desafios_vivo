@@ -147,7 +147,7 @@ def grafico_pizza_transportadoras(df_atrasadas: pd.DataFrame) -> go.Figure:
     )
 
     fig.update_layout(
-        **_layout_base("", height=420, margin=dict(l=20, r=160, t=60, b=20)),
+        **_layout_base("", height=520, margin=dict(l=20, r=160, t=60, b=20)),
         legend=dict(
             font=dict(size=13, color=TEXTO),
             orientation="v",
