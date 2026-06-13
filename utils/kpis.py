@@ -49,3 +49,35 @@ def exibir_alerta(percentual_atraso: float) -> None:
         st.success(
             f"✅ Operação controlada: apenas {percentual_atraso:.1f}% das entregas estão atrasadas."
         )
+
+
+def gerar_insight(df_atrasadas: pd.DataFrame, percentual_atraso: float) -> str:
+    """Gera um texto de insight automático com base nos dados filtrados."""
+    if len(df_atrasadas) == 0:
+        return "✅ Nenhuma entrega atrasada encontrada para os filtros selecionados."
+
+    # Transportadora com mais dias de atraso
+    ranking = (
+        df_atrasadas
+        .groupby("transportadora")
+        .agg(dias=("dias_atraso", "sum"), qtd=("atrasada", "count"))
+        .sort_values("dias", ascending=False)
+    )
+    pior_transp    = ranking.index[0]
+    pior_dias      = int(ranking.iloc[0]["dias"])
+    pior_qtd       = int(ranking.iloc[0]["qtd"])
+    total_dias     = int(ranking["dias"].sum())
+    pior_pct       = round(pior_dias / total_dias * 100, 1) if total_dias > 0 else 0
+
+    # Região com mais atrasos
+    pior_regiao = (
+        df_atrasadas["regiao"].value_counts().idxmax()
+    )
+    pior_regiao_qtd = int(df_atrasadas["regiao"].value_counts().iloc[0])
+
+    return (
+        f"📌 **{pior_transp}** lidera com **{pior_dias} dias** acumulados de atraso "
+        f"em {pior_qtd} entrega(s) — representando **{pior_pct}%** do total de dias perdidos. "
+        f"A região mais crítica é **{pior_regiao}**, com {pior_regiao_qtd} entrega(s) atrasada(s). "
+        f"Recomenda-se revisão imediata do contrato com {pior_transp} e reforço operacional no {pior_regiao}."
+    )

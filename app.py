@@ -1,11 +1,13 @@
 import streamlit as st
+import pandas as pd
 
 from utils.data   import carregar_dados, aplicar_filtros
-from utils.kpis   import calcular_kpis, exibir_kpis, exibir_alerta
+from utils.kpis   import calcular_kpis, exibir_kpis, exibir_alerta, gerar_insight
 from utils.charts import (
     grafico_transportadoras,
     grafico_regioes,
     grafico_pizza_transportadoras,
+    grafico_ranking_transportadoras,
     grafico_mapa_regioes,
 )
 
@@ -25,13 +27,6 @@ st.set_page_config(
 
 with open("assets/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        h1 { color: #F59E0B !important; }
-        section[data-testid="stSidebar"] h1 { color: white !important; }
-    </style>
-""", unsafe_allow_html=True)
 
 # =====================
 # CABEÇALHO
@@ -75,6 +70,12 @@ exibir_kpis(kpis)
 exibir_alerta(kpis["percentual_atraso"])
 
 # =====================
+# INSIGHT AUTOMÁTICO
+# =====================
+
+st.info(gerar_insight(df_atrasadas, kpis["percentual_atraso"]))
+
+# =====================
 # GRÁFICOS — TRANSPORTADORAS x REGIÕES
 # =====================
 
@@ -99,7 +100,7 @@ with col2:
     )
 
 # =====================
-# TRANSPORTADORAS MAIS PROBLEMÁTICAS + MAPA
+# RANKING + MAPA
 # =====================
 
 st.divider()
@@ -109,7 +110,7 @@ col3, col4 = st.columns(2)
 
 with col3:
     st.plotly_chart(
-        grafico_pizza_transportadoras(df_atrasadas),
+        grafico_ranking_transportadoras(df_atrasadas),
         use_container_width=True,
         config={"displayModeBar": False},
     )
@@ -122,14 +123,25 @@ with col4:
     )
 
 # =====================
-# BASE DE DADOS
+# BASE DE DADOS COM DESTAQUE
 # =====================
 
 st.divider()
 st.subheader("📋 Base de Dados")
 
+def colorir_linhas(row):
+    """Destaca em vermelho claro as entregas atrasadas."""
+    if row["atrasada"]:
+        return ["background-color: #FEE2E2; color: #991B1B"] * len(row)
+    return [""] * len(row)
+
+df_exibir = df_filtrado[[
+    "id_entrega", "transportadora", "regiao",
+    "prazo_dias", "dias_reais", "atrasada"
+]].copy()
+
 st.dataframe(
-    df_filtrado[["id_entrega", "transportadora", "regiao", "prazo_dias", "dias_reais", "atrasada"]],
+    df_exibir.style.apply(colorir_linhas, axis=1),
     hide_index=True,
     use_container_width=True,
 )

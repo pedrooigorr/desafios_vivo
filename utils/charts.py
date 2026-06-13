@@ -14,6 +14,9 @@ GRADE        = "#E5E7EB"
 _PALETA_PIE  = [AZUL_ESCURO, AZUL_MEDIO, AZUL_CLARO1, AZUL_CLARO2, AZUL_CLARO3]
 _PALETA_MAPA = [AZUL_CLARO3, AZUL_MEDIO, AZUL_ESCURO]
 
+# Todas as regiões do Brasil
+TODAS_REGIOES = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"]
+
 # ── Coordenadas das regiões ───────────────────────────────────────────────────
 REGIOES_COORDS = {
     "Norte":        {"lat": -4.0,  "lon": -62.0, "sigla": "NO"},
@@ -83,14 +86,19 @@ def grafico_transportadoras(df_atrasadas: pd.DataFrame) -> go.Figure:
 
 
 def grafico_regioes(df_atrasadas: pd.DataFrame) -> go.Figure:
-    """Gráfico de barras vertical — atrasos por região."""
-    dados = (
+    """Gráfico de barras vertical — atrasos por região (todas as regiões, mesmo zeradas)."""
+    contagem = (
         df_atrasadas
         .groupby("regiao")
         .size()
         .reset_index(name="atrasos")
-        .sort_values("atrasos", ascending=False)
     )
+
+    # Garante todas as regiões mesmo com 0 atrasos
+    base = pd.DataFrame({"regiao": TODAS_REGIOES})
+    dados = base.merge(contagem, on="regiao", how="left").fillna(0)
+    dados["atrasos"] = dados["atrasos"].astype(int)
+    dados = dados.sort_values("atrasos", ascending=False)
 
     fig = px.bar(
         dados,
@@ -162,6 +170,62 @@ def grafico_pizza_transportadoras(df_atrasadas: pd.DataFrame) -> go.Figure:
         textinfo="percent+label",
         textfont=dict(size=14, color="white"),
         marker=dict(line=dict(color="#FFFFFF", width=2)),
+    )
+
+    return fig
+
+
+def grafico_ranking_transportadoras(df_atrasadas: pd.DataFrame) -> go.Figure:
+    """Ranking numerado das transportadoras mais problemáticas."""
+    dados = (
+        df_atrasadas
+        .groupby("transportadora")
+        .agg(
+            atrasos=("atrasada", "count"),
+            dias_atraso=("dias_atraso", "sum"),
+        )
+        .reset_index()
+        .sort_values("dias_atraso", ascending=False)
+        .reset_index(drop=True)
+    )
+    dados.index += 1  # começa em 1
+    dados["posicao"] = dados.index.map(lambda i: f"#{i}")
+    dados["label"] = dados["posicao"] + " " + dados["transportadora"]
+
+    fig = px.bar(
+        dados,
+        x="dias_atraso",
+        y="label",
+        orientation="h",
+        title="🏆 Ranking — Dias Totais de Atraso",
+        color="dias_atraso",
+        color_continuous_scale=[AZUL_CLARO2, AZUL_ESCURO],
+        text="dias_atraso",
+    )
+
+    fig.update_layout(
+        **_layout_base("", height=520, margin=dict(l=20, r=60, t=60, b=40)),
+        showlegend=False,
+        coloraxis_showscale=False,
+        xaxis=dict(
+            title=dict(text="Dias Totais de Atraso", font=dict(size=14, color=TEXTO), standoff=10),
+            tickfont=dict(size=13, color=TEXTO),
+            gridcolor=GRADE,
+        ),
+        yaxis=dict(
+            title=dict(text="", font=dict(size=14, color=TEXTO)),
+            tickfont=dict(size=14, color=TEXTO, weight="bold"),
+            autorange="reversed",
+        ),
+    )
+
+    fig.update_traces(
+        textposition="outside",
+        texttemplate="%{x} dias",
+        textfont=dict(size=14, color=TEXTO, weight="bold"),
+        marker_line_width=1.5,
+        marker_line_color="#0F172A",
+        width=0.5,
     )
 
     return fig

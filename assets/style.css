@@ -37,16 +37,25 @@ header[data-testid="stHeader"] * {
 body,
 p,
 label,
-.stApp span:not([class*="g"]):not([class*="text"]):not(h1 span),
-.stApp div:not([class*="plotly"]):not([data-embedding="plotly"]):not([class*="js-plotly"]):not(:has(h1)) {
+.stApp span:not([class*="g"]):not([class*="text"]),
+.stApp div:not([class*="plotly"]):not([data-embedding="plotly"]):not([class*="js-plotly"]) {
     color: #111827 !important;
 }
 
-h1, h1 span { color: #F59E0B !important; }
-h2, h3 { color: #1E3A5F !important; }
+/* Título principal em amarelo */
+h1, h1 span {
+    color: #F59E0B !important;
+}
 
+h2, h3 {
+    color: #1E3A5F !important;
+}
+
+/* Sidebar — título em branco para não herdar o amarelo */
 section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h1 span { color: white !important; }
+section[data-testid="stSidebar"] h1 span {
+    color: white !important;
+}
 
 /* =====================
    SIDEBAR
@@ -95,6 +104,7 @@ button[data-testid="stSidebarCollapseButton"]:hover {
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     border: 1px solid #E5E7EB;
+    overflow: hidden !important;
 }
 
 [data-testid="stDataFrame"] {
@@ -103,7 +113,7 @@ button[data-testid="stSidebarCollapseButton"]:hover {
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     border: 1px solid #E5E7EB;
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 [data-testid="stDataFrame"] iframe {
@@ -179,4 +189,49 @@ div[data-baseweb="popover"] button { color: #FFFFFF !important; }
 div[data-baseweb="popover"] li:hover,
 div[role="option"]:hover {
     background-color: #334155 !important;
+}
+
+/* =====================
+   ANIMAÇÕES LEVES
+   ===================== */
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-testid="stMetric"] {
+    animation: fadeSlideUp 0.4s ease forwards;
+}
+
+[data-testid="stMetric"]:nth-child(1) { animation-delay: 0.05s; }
+[data-testid="stMetric"]:nth-child(2) { animation-delay: 0.10s; }
+[data-testid="stMetric"]:nth-child(3) { animation-delay: 0.15s; }
+[data-testid="stMetric"]:nth-child(4) { animation-delay: 0.20s; }
+
+[data-testid="stMetric"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+[data-testid="stPlotlyChart"] {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+[data-testid="stPlotlyChart"]:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+    transition: box-shadow 0.25s ease;
+}
+
+[data-testid="stDataFrame"] {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+hr {
+    animation: fadeIn 0.4s ease forwards;
 }
