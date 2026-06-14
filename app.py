@@ -124,41 +124,46 @@ with col2:
     )
 
 # =====================
-# PONTUALIDADE
+# PONTUALIDADE + RANKING
 # =====================
 
 st.divider()
-st.subheader("Pontualidade por Transportadora")
-st.plotly_chart(
-    grafico_pontualidade(df_filtrado),
-    use_container_width=True,
-    config={"displayModeBar": False},
-)
 
-# =====================
-# RANKING + PIZZA + MAPA
-# =====================
+col_pont, col_rank = st.columns(2)
 
-st.divider()
-st.subheader("Transportadoras Mais Problemáticas")
+with col_pont:
+    st.subheader("Pontualidade por Transportadora")
+    st.plotly_chart(
+        grafico_pontualidade(df_filtrado),
+        use_container_width=True,
+        config={"displayModeBar": False},
+    )
 
-col3, col4, col5 = st.columns(3)
-
-with col3:
+with col_rank:
+    st.subheader(" Ranking de Atrasos")
     st.plotly_chart(
         grafico_ranking_transportadoras(df_atrasadas),
         use_container_width=True,
         config={"displayModeBar": False},
     )
 
-with col4:
+# =====================
+# PIZZA + MAPA
+# =====================
+
+st.divider()
+st.subheader(" Transportadoras Mais Problemáticas")
+
+col3, col4 = st.columns(2)
+
+with col3:
     st.plotly_chart(
         grafico_pizza_transportadoras(df_atrasadas),
         use_container_width=True,
         config={"displayModeBar": False},
     )
 
-with col5:
+with col4:
     st.plotly_chart(
         grafico_mapa_regioes(df_atrasadas),
         use_container_width=True,

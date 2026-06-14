@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-
+# ── Paleta centralizada ──────────────────────────────────────────────────────
 AZUL_ESCURO  = "#1E3A5F"
 AZUL_MEDIO   = "#2E5C99"
 AZUL_CLARO1  = "#4A80C4"
@@ -248,7 +248,7 @@ def grafico_pontualidade(df_filtrado: pd.DataFrame) -> go.Figure:
     )
 
     fig.update_layout(
-        **_layout_base(""),
+        **_layout_base("", height=420),
         legend=dict(
             title="", font=dict(size=13, color=TEXTO),
             orientation="h", x=0.5, y=1.08,
