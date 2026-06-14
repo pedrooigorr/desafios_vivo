@@ -8,6 +8,7 @@ from utils.charts import (
     grafico_regioes,
     grafico_pizza_transportadoras,
     grafico_ranking_transportadoras,
+    grafico_pontualidade,
     grafico_mapa_regioes,
 )
 
@@ -17,7 +18,7 @@ from utils.charts import (
 
 st.set_page_config(
     page_title="Dashboard Logístico",
-    page_icon="🚚",
+    page_icon="",
     layout="wide",
 )
 
@@ -45,7 +46,7 @@ df = carregar_dados()
 # FILTROS (SIDEBAR)
 # =====================
 
-st.sidebar.title("⚙️ Painel de Filtros")
+st.sidebar.title("Painel de Filtros")
 st.sidebar.markdown("Selecione os critérios para analisar o desempenho logístico.")
 
 regioes = st.sidebar.multiselect(
@@ -58,8 +59,21 @@ transportadoras = st.sidebar.multiselect(
     sorted(df["transportadora"].unique()),
 )
 
+if st.sidebar.button("Limpar Filtros"):
+    regioes = []
+    transportadoras = []
+    st.rerun()
+
 df_filtrado  = aplicar_filtros(df, regioes, transportadoras)
 df_atrasadas = df_filtrado[df_filtrado["atrasada"]]
+
+st.sidebar.markdown("---")
+st.sidebar.markdown(
+    f"Exibindo **{len(df_filtrado)}** de **{len(df)}** entregas"
+)
+st.sidebar.markdown(
+    f"**{len(df_atrasadas)}** entrega(s) atrasada(s)"
+)
 
 # =====================
 # KPIs E ALERTA
@@ -76,7 +90,7 @@ exibir_alerta(kpis["percentual_atraso"])
 st.info(gerar_insight(df_atrasadas, kpis["percentual_atraso"]))
 
 # =====================
-# GRÁFICOS — TRANSPORTADORAS x REGIÕES
+# GRAFICOS — TRANSPORTADORAS x REGIOES
 # =====================
 
 st.divider()
@@ -84,7 +98,7 @@ st.divider()
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("🚚 Comparação entre Transportadoras")
+    st.subheader("Comparação entre Transportadoras")
     st.plotly_chart(
         grafico_transportadoras(df_atrasadas),
         use_container_width=True,
@@ -92,7 +106,7 @@ with col1:
     )
 
 with col2:
-    st.subheader("🗺️ Análise por Região")
+    st.subheader("Análise por Região")
     st.plotly_chart(
         grafico_regioes(df_atrasadas),
         use_container_width=True,
@@ -100,13 +114,25 @@ with col2:
     )
 
 # =====================
-# RANKING + MAPA
+# PONTUALIDADE
+# =====================
+
+st.divider()
+st.subheader("Pontualidade por Transportadora")
+st.plotly_chart(
+    grafico_pontualidade(df_filtrado),
+    use_container_width=True,
+    config={"displayModeBar": False},
+)
+
+# =====================
+# RANKING + PIZZA + MAPA
 # =====================
 
 st.divider()
 st.subheader("🚨 Transportadoras Mais Problemáticas")
 
-col3, col4 = st.columns(2)
+col3, col4, col5 = st.columns(3)
 
 with col3:
     st.plotly_chart(
@@ -116,6 +142,13 @@ with col3:
     )
 
 with col4:
+    st.plotly_chart(
+        grafico_pizza_transportadoras(df_atrasadas),
+        use_container_width=True,
+        config={"displayModeBar": False},
+    )
+
+with col5:
     st.plotly_chart(
         grafico_mapa_regioes(df_atrasadas),
         use_container_width=True,
@@ -127,18 +160,27 @@ with col4:
 # =====================
 
 st.divider()
-st.subheader("📋 Base de Dados")
+st.subheader("Base de Dados")
+
+csv = df_filtrado.to_csv(index=False).encode("utf-8")
+st.download_button(
+    label="Exportar CSV",
+    data=csv,
+    file_name="entregas_filtradas.csv",
+    mime="text/csv",
+)
 
 def colorir_linhas(row):
-    """Destaca em vermelho claro as entregas atrasadas."""
-    if row["atrasada"]:
+    if row["atrasada"] == "❌ Sim":
         return ["background-color: #FEE2E2; color: #991B1B"] * len(row)
-    return [""] * len(row)
+    return ["background-color: #F0FDF4; color: #166534"] * len(row)
 
 df_exibir = df_filtrado[[
     "id_entrega", "transportadora", "regiao",
     "prazo_dias", "dias_reais", "atrasada"
 ]].copy()
+
+df_exibir["atrasada"] = df_exibir["atrasada"].map({True: "❌ Sim", False: "✅ Não"})
 
 st.dataframe(
     df_exibir.style.apply(colorir_linhas, axis=1),

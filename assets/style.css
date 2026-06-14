@@ -87,6 +87,33 @@ button[data-testid="stSidebarCollapseButton"]:hover {
     background-color: #111827 !important;
 }
 
+/* Botão de limpar filtros — largura total e texto visível */
+section[data-testid="stSidebar"] .stButton > button {
+    width: 100% !important;
+    white-space: nowrap !important;
+    background-color: #29497A !important;
+    color: #FFFFFF !important;
+    border: 2px solid #4A6FA5 !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    transition: background-color 0.2s ease !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button p {
+    color: #FFFFFF !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background-color: #1E3A5F !important;
+    border-color: #7AAEDD !important;
+    color: #FFFFFF !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover p {
+    color: #FFFFFF !important;
+}
+
 /* =====================
    CARDS (KPIs / GRÁFICOS / TABELA)
    ===================== */
