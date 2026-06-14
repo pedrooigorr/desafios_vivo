@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# ── Paleta centralizada ──────────────────────────────────────────────────────
+
 AZUL_ESCURO  = "#1E3A5F"
 AZUL_MEDIO   = "#2E5C99"
 AZUL_CLARO1  = "#4A80C4"
@@ -201,14 +201,14 @@ def grafico_ranking_transportadoras(df_atrasadas: pd.DataFrame) -> go.Figure:
 
     fig = px.bar(
         dados, x="dias_atraso", y="label", orientation="h",
-        title="🏆 Ranking — Dias Totais de Atraso",
+        title="Ranking — Dias Totais de Atraso",
         color="dias_atraso",
         color_continuous_scale=[AZUL_CLARO2, AZUL_ESCURO],
         text="dias_atraso",
     )
 
     fig.update_layout(
-        **_layout_base("", height=420, margin=dict(l=20, r=60, t=60, b=40)),
+        **_layout_base("", height=420, margin=dict(l=20, r=100, t=60, b=40)),
         showlegend=False, coloraxis_showscale=False,
         xaxis=dict(
             title=dict(text="Dias Totais de Atraso", font=dict(size=14, color=TEXTO), standoff=10),

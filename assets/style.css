@@ -1,13 +1,9 @@
-/* =====================
-   FUNDO PRINCIPAL
-   ===================== */
 .stApp {
     background-color: #D1D5DB;
 }
 
-/* =====================
-   HEADER
-   ===================== */
+
+
 header[data-testid="stHeader"],
 header[data-testid="stHeader"] > div,
 .stApp > header {
@@ -31,9 +27,7 @@ header[data-testid="stHeader"] * {
     --text-color: #FFFFFF !important;
 }
 
-/* =====================
-   TEXTO GERAL
-   ===================== */
+
 body,
 p,
 label,
@@ -42,7 +36,7 @@ label,
     color: #111827 !important;
 }
 
-/* Título principal em amarelo */
+
 h1, h1 span {
     color: #F59E0B !important;
 }
@@ -51,15 +45,13 @@ h2, h3 {
     color: #1E3A5F !important;
 }
 
-/* Sidebar — título em branco para não herdar o amarelo */
+
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h1 span {
     color: white !important;
 }
 
-/* =====================
-   SIDEBAR
-   ===================== */
+
 section[data-testid="stSidebar"] {
     background-color: #3c424d;
 }
@@ -87,7 +79,7 @@ button[data-testid="stSidebarCollapseButton"]:hover {
     background-color: #111827 !important;
 }
 
-/* Botão de limpar filtros — largura total e texto visível */
+
 section[data-testid="stSidebar"] .stButton > button {
     width: 100% !important;
     white-space: nowrap !important;
@@ -114,9 +106,7 @@ section[data-testid="stSidebar"] .stButton > button:hover p {
     color: #FFFFFF !important;
 }
 
-/* =====================
-   CARDS (KPIs / GRÁFICOS / TABELA)
-   ===================== */
+
 [data-testid="stMetric"] {
     background-color: #FFFFFF;
     border-radius: 16px;
@@ -148,18 +138,14 @@ section[data-testid="stSidebar"] .stButton > button:hover p {
     border-radius: 12px;
 }
 
-/* =====================
-   LAYOUT PRINCIPAL
-   ===================== */
+
 .main .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
     background-color: transparent;
 }
 
-/* =====================
-   KPI - LABELS E VALORES
-   ===================== */
+
 [data-testid="stMetricLabel"] {
     color: #374151 !important;
     font-weight: 600;
@@ -174,9 +160,7 @@ section[data-testid="stSidebar"] .stButton > button:hover p {
     color: #4B5563 !important;
 }
 
-/* =====================
-   FILTROS MULTISELECT
-   ===================== */
+
 .stMultiSelect div[data-baseweb="select"] > div {
     background-color: #6f7783 !important;
     color: rgb(8, 8, 8) !important;
@@ -195,9 +179,7 @@ section[data-testid="stSidebar"] .stButton > button:hover p {
 
 .stMultiSelect [data-baseweb="tag"] span { color: white !important; }
 
-/* =====================
-   LISTA SUSPENSA (DROPDOWN)
-   ===================== */
+
 div[data-baseweb="popover"] ul,
 div[role="listbox"] {
     background-color: #1E293B !important;
@@ -218,9 +200,7 @@ div[role="option"]:hover {
     background-color: #334155 !important;
 }
 
-/* =====================
-   ANIMAÇÕES LEVES
-   ===================== */
+
 @keyframes fadeSlideUp {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
