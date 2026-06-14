@@ -12,7 +12,9 @@ from utils.charts import (
     grafico_mapa_regioes,
 )
 
-
+# =====================
+# CONFIGURAÇÃO DA PÁGINA
+# =====================
 
 st.set_page_config(
     page_title="Dashboard Logístico",
@@ -20,39 +22,57 @@ st.set_page_config(
     layout="wide",
 )
 
-
+# =====================
+# CSS EXTERNO
+# =====================
 
 with open("assets/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-
+# =====================
+# CABEÇALHO
+# =====================
 
 st.title("Dashboard Logístico Inteligente")
 st.caption("Monitoramento de atrasos logísticos e desempenho operacional em tempo real")
 
-
+# =====================
+# DADOS
+# =====================
 
 df = carregar_dados()
 
-
+# =====================
+# FILTROS (SIDEBAR)
+# =====================
 
 st.sidebar.title("Painel de Filtros")
 st.sidebar.markdown("Selecione os critérios para analisar o desempenho logístico.")
 
+# Inicializa session_state para os filtros
+if "regioes" not in st.session_state:
+    st.session_state["regioes"] = []
+if "transportadoras" not in st.session_state:
+    st.session_state["transportadoras"] = []
+
+# Botão de limpar filtros — reseta antes de renderizar os multiselects
+if st.sidebar.button("Limpar Filtros"):
+    st.session_state["regioes"] = []
+    st.session_state["transportadoras"] = []
+
 regioes = st.sidebar.multiselect(
     "Selecione a Região",
     sorted(df["regiao"].unique()),
+    default=st.session_state["regioes"],
+    key="regioes",
 )
 
 transportadoras = st.sidebar.multiselect(
     "Selecione a Transportadora",
     sorted(df["transportadora"].unique()),
+    default=st.session_state["transportadoras"],
+    key="transportadoras",
 )
-
-if st.sidebar.button("Limpar Filtros"):
-    regioes = []
-    transportadoras = []
-    st.rerun()
 
 df_filtrado  = aplicar_filtros(df, regioes, transportadoras)
 df_atrasadas = df_filtrado[df_filtrado["atrasada"]]
@@ -65,17 +85,23 @@ st.sidebar.markdown(
     f"**{len(df_atrasadas)}** entrega(s) atrasada(s)"
 )
 
-
+# =====================
+# KPIs E ALERTA
+# =====================
 
 kpis = calcular_kpis(df_filtrado, df_atrasadas)
 exibir_kpis(kpis)
 exibir_alerta(kpis["percentual_atraso"])
 
-
+# =====================
+# INSIGHT AUTOMÁTICO
+# =====================
 
 st.info(gerar_insight(df_atrasadas, kpis["percentual_atraso"]))
 
-
+# =====================
+# GRAFICOS — TRANSPORTADORAS x REGIOES
+# =====================
 
 st.divider()
 
@@ -97,8 +123,9 @@ with col2:
         config={"displayModeBar": False},
     )
 
-
-
+# =====================
+# PONTUALIDADE
+# =====================
 
 st.divider()
 st.subheader("Pontualidade por Transportadora")
@@ -108,7 +135,9 @@ st.plotly_chart(
     config={"displayModeBar": False},
 )
 
-
+# =====================
+# RANKING + PIZZA + MAPA
+# =====================
 
 st.divider()
 st.subheader("Transportadoras Mais Problemáticas")
@@ -136,7 +165,9 @@ with col5:
         config={"displayModeBar": False},
     )
 
-
+# =====================
+# BASE DE DADOS COM DESTAQUE
+# =====================
 
 st.divider()
 st.subheader("Base de Dados")
