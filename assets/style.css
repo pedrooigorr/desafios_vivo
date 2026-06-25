@@ -369,3 +369,53 @@ hr {
 .stTabs .stMarkdown strong {
     color: #111827 !important;
 }
+
+/* Força texto visível dentro dos inputs do CRUD quando selecionados/focados */
+.stTabs .stSelectbox div[data-baseweb="select"] input,
+.stTabs .stSelectbox div[data-baseweb="select"] [data-testid="stSelectboxVirtualDropdown"],
+.stTabs .stSelectbox div[data-baseweb="select"] > div > div {
+    color: #111827 !important;
+    background-color: #FFFFFF !important;
+}
+
+.stTabs .stNumberInput div[data-baseweb="input"] {
+    background-color: #FFFFFF !important;
+    border: 2px solid #1E3A5F !important;
+    border-radius: 10px !important;
+}
+
+.stTabs .stNumberInput div[data-baseweb="input"]:focus-within {
+    border-color: #2E5C99 !important;
+    box-shadow: 0 0 0 2px rgba(46,92,153,0.2) !important;
+}
+
+.stTabs .stNumberInput input {
+    color: #111827 !important;
+    background-color: #FFFFFF !important;
+    font-weight: 500 !important;
+}
+
+/* Selectbox borda azul ao focar */
+.stTabs .stSelectbox div[data-baseweb="select"]:focus-within > div {
+    border-color: #1E3A5F !important;
+    box-shadow: 0 0 0 2px rgba(30,58,95,0.2) !important;
+}
+
+/* Seta do selectbox */
+.stTabs .stSelectbox svg {
+    color: #1E3A5F !important;
+    fill: #1E3A5F !important;
+}
+
+/* Força texto das tabs sempre visível */
+.stTabs [aria-selected="true"] p,
+.stTabs [aria-selected="true"] span,
+.stTabs [aria-selected="true"] div {
+    color: #FFFFFF !important;
+}
+
+.stTabs [aria-selected="false"] p,
+.stTabs [aria-selected="false"] span,
+.stTabs [aria-selected="false"] div {
+    color: #1E3A5F !important;
+}
