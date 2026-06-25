@@ -282,3 +282,90 @@ div[role="option"]:hover {
 hr {
     animation: fadeIn 0.4s ease forwards;
 }
+
+/* =====================
+   CRUD — GERENCIAR ENTREGAS
+   ===================== */
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    background-color: transparent !important;
+    gap: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: #FFFFFF !important;
+    border-radius: 8px 8px 0 0 !important;
+    border: 1px solid #E5E7EB !important;
+    color: #1E3A5F !important;
+    font-weight: 600 !important;
+    padding: 8px 20px !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border-color: #1E3A5F !important;
+}
+
+.stTabs [data-baseweb="tab"] p {
+    color: inherit !important;
+}
+
+/* Selectbox do CRUD */
+.stTabs .stSelectbox div[data-baseweb="select"] > div {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    border: 2px solid #E5E7EB !important;
+    border-radius: 10px !important;
+}
+
+.stTabs .stSelectbox div[data-baseweb="select"] span,
+.stTabs .stSelectbox div[data-baseweb="select"] div {
+    color: #111827 !important;
+}
+
+/* Number input do CRUD */
+.stTabs .stNumberInput input {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    border: 2px solid #E5E7EB !important;
+    border-radius: 10px !important;
+}
+
+.stTabs .stNumberInput button {
+    background-color: #F3F4F6 !important;
+    color: #111827 !important;
+    border: 1px solid #E5E7EB !important;
+}
+
+/* Botões do CRUD */
+.stTabs .stButton > button {
+    background-color: #1E3A5F !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 8px 20px !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.stTabs .stButton > button p {
+    color: #FFFFFF !important;
+}
+
+.stTabs .stButton > button:hover {
+    background-color: #2E5C99 !important;
+}
+
+/* Labels do CRUD */
+.stTabs label {
+    color: #111827 !important;
+    font-weight: 600 !important;
+}
+
+/* Markdown dentro das tabs */
+.stTabs .stMarkdown p,
+.stTabs .stMarkdown strong {
+    color: #111827 !important;
+}
